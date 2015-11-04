@@ -3,19 +3,37 @@ package gui;
 import core.Task;
 
 import javax.swing.JPanel;
+
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Component;
+
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.JRadioButton;
+
 import java.awt.Font;
+
 import javax.swing.JLabel;
+
 import java.awt.Color;
+
 import javax.swing.ImageIcon;
+
 import java.awt.FlowLayout;
+
 import javax.swing.BoxLayout;
+
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.Insets;
 
 public class TaskPanel extends JPanel {
 	MainWindow parent;
@@ -39,15 +57,24 @@ public class TaskPanel extends JPanel {
 		leftPart.add(horizontalStrut);
 		
 		JRadioButton radioButton = new JRadioButton("");
+		radioButton.setMargin(new Insets(2, 2, 2, 2));
 		radioButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				if(parent.posMenuX!=0)
+					return;
+				task.markAsDone();
+				parent.populate();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if(parent.posMenuX!=0)
+					return;
 				task.markAsDone();
 				parent.populate();
 			}
 		});
 		radioButton.setOpaque(false);
-		radioButton.setFont(new Font("Segoe UI Light", Font.PLAIN, 19));
 		leftPart.add(radioButton);
 		
 		JLabel label = new JLabel(task.getName());
@@ -79,6 +106,8 @@ public class TaskPanel extends JPanel {
 		label_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				if(parent.posMenuX!=0)
+					return;
 				System.out.print("Click on task");
 			}
 		});
