@@ -1,0 +1,124 @@
+\documentclass{article}
+
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+\title{Todo list : cahier des charges}
+\date{\today}
+\author{Lucas Franceschino}
+
+\begin{document}
+	\maketitle
+
+	\tableofcontents
+
+	\section{Introduction}
+	Ce programme est un gestionnaire de tâches écris en Java, dans le cadre de l'UE HLIN505, à la fac de science de Montpellier.\\
+
+	\section{Analyse des besoins et choix}
+		\subsection{Généralités}
+			On shouaite développer un gestionaire de tâche à usage individuel. Lorque quelqu'un souhaite organiser, lister et gérer ses tâches, c'est qu'il souhaite optimiser son temps et mieux gérer les imprévus.
+		\subsection{Tâches}
+			Le concept majeur de ce programme est le concept de tâche.
+			\begin{itemize}
+				\item Une tâche possède un nom non vide ;
+				\item Une tâche est rangée dans une ou aucune catégorie ;
+				\item Une tâche peut avoir une description ;
+				\item A tout instant, tant que la tâche n'est pas terminée, on peut modifier ces trois précédentes caractéristiques ;
+				\item Une tâchge a un moment d'échéance ;
+				\item Ce moment est d'une précision d'un jour : la granularité des date est de l'ordre du jour, donc ;
+				\item Il n'est pas possible de créer une tâche déjà en retard$_{(1)}$ (la date d'échéance d'une tâche ne peut être que strictement ultérieur au jour actuel) ;
+				\item Une tâche peut se trouver dans deux états : terminé ou non ;
+				\item Une tâche peut se trouver dans deux états : en retard ou non ;
+				\item Une tâche doit pouvoir être supprimée ;
+				\item Une tâche peut être de deux types différents :
+				\begin{itemize}
+					\item Court : possède une date d'échéance simple ;
+					\item Long : possède une date de début et une date de fin.\\
+						La date de début doit nécéssairement être avant la date de fin$_{(2)}$.\\
+						On considère toujours 3 paliers entre le début et la fin :
+						\begin{itemize}
+							\item \textit{Tâche finie à 0\% (Date de fin)}
+							\item Tâche finie à 25\%
+							\item Tâche finie à 50\%
+							\item Tâche finie à 75\%
+							\item \textit{Tâche finie à 100\% (Date de fin)}
+						\end{itemize}
+						Pour ce type de tâche, on considère un pourcentage entier représentant l'avancement du projet.\\La granularité de l'avancement est ici 1 pourcent.\\
+						On ne peut que avancer dans l'avancement. 
+				\end{itemize}
+				\item On peut modifier ces tâches, tant que les conditions $_{(1,2)}$ sont respectées ; 
+			\end{itemize}
+			\subsubsection{Retard d'une tâche}
+			Une tâche est signaliée comme en retard si sa date d'échéance, ou si elle en possède, sa date d'échéance intermédiaire, est dépassée.
+			\subsubsection{Tâche terminée}
+			Une tâche accomplie signifie :
+			\begin{itemize}
+				\item Un pourcentage de 100\% d'accomplissement dans le cas d'une tâche longue ;
+				\item Dans le cas d'une tâche courte, une date d'accomplissement effective d'une tâche non nulle, affecté lorsque l'utilisateur le décide.
+			\end{itemize}
+		\subsection{Catégories}
+			Pour gérer correctement des tâches, il est intéressant d'en faire une découpe disjointe, de façon à les ranger dans différentes catégories.
+			\\~\\
+			Une tâche (longue ou courte) peut :
+			\begin{itemize}
+				\item appartenir à une catégorie
+				\item ne pas appartenir à une catégorie, et dans ce cas, être rangé parmis les tâche non catégorisés, ce qui peut être vu comme une autre catégorie.
+			\end{itemize}~\\
+			Une catégorie doit suivre le comportement suivant :
+			\begin{itemize}
+				\item Son titre ne doit pas être nul ;
+				\item Si on modifie son titre, alors toute partie de l'interface présentant cette catégorie doit être immédiatement rafraichie pour correspondre à la nouvelle version ;
+				\item Si on supprime une catégorie, toute tâches sous cette précédente catégorie doit être désafectée de cette tâche et rangé sous "non catégorisés".
+			\end{itemize}
+		\subsection{Interface}
+			L'interface devra présenter en premier plan une liste de tâches à effectuer.
+			\paragraph{}
+			En deuxième plan, on souhaire accéder aux fonctions suivantes, par le biais de boutons directement accessible :
+			\begin{itemize}
+				\item la liste éditable des catégories ;
+				\item ajouter une catégorie ;
+				\item éditer un bilan.
+			\end{itemize}
+			\paragraph{}
+			Cette liste de tâches à effectuer pourra apparaitre sous trois formes différentes :
+
+			\begin{itemize}
+				\item \textbf{Simple} : les tâches sont affichées par ordre croissant de date d'échéance. Visuellement, les tâches partageant la même date d'échéance sont regroupées.
+				\item \textbf{Priorité} : les tâches sont affichées par ordre croissant de date d'échéance, en considérant les paliers des dates à long termes comme des dates d'échéances. Visuellement, les tâches partageant la même date d'échéance sont regroupées.
+				\item \textbf{Résumé} : affiche une tâche importante, trois tâches moyennement importantes, et 5 peu importante. Visuellement, les tâches partageant un même degré de priorité sont regroupées.
+			\end{itemize}
+			\paragraph{}
+			Un code couleur sera utilisé pour spécifier qu'une tâche est en retard.
+			\paragraph{}
+			Un menu contextuel sur la tâche permet de la supprimer.
+			\paragraph{}
+			Pour les tâches de long court, on utilisera une représentation graphique pour montrer où l'on en est.
+		\subsubsection{Catégories}
+		Dans l'interface, les catégories seront présentées en liste, avec possibilité d'édition, de rajout, et de suppression. Cette liste sera présenté par le biais d'un menu coulissant latéral à gauche.
+		\paragraph{}
+		Depuis ce menu, il sera aussi possible de choisir un filtre en terme de catégorie pour l'affichage des tâches.
+	\subsection{Edition de bilans}
+		On souhaite éditer des bilans.
+		\paragraph{(dépendance)} Pour pouvoir éditer des bilans, il faut pouvoir accéder à la liste des tâches qui ont déjà étés complétées, c'est-à dire qu'il ne faut pas supprimer mais conserver les tâches complétées.
+		\paragraph{}
+		Soit $d_1$ et $d_2$, deux dates, avec $d_1<d_2$. Un bilan pour ces dates est un résumé de toutes les tâches dont l'échéance $d_e\in [d_1, d_2]$.
+		\paragraph{}
+		Un bilan propose le nombre de tâche :
+		\begin{itemize}
+			\item Terminée en retard ;
+			\item Terminée à l'heure ;
+			\item Pas encore terminée mais en retard ;
+			\item Pas encore terminée mais pas en retard ;
+		\end{itemize}
+		\paragraph{}
+		Aussi le bilan montre ces différentes tâches.
+		\paragraph{}
+		Un bilan est intéressant s'il est exportable, j'ai donc choisi le format HTML, facile à générer et très portable, pour présenter les fonctionnalités précédement caractérisées. 
+	\subsection{Données}
+		Les données devront pouvoir être sauvegardées, être presistantes.
+\section{Choix graphiques}
+	Je me suis inspiré de Todoist, gestionnaire de tâche que j'adore, \url{https://fr.todoist.com/}.
+\end{document}
