@@ -1,2 +1,9 @@
+<!--- title: TodoList -->
+<!--- en -->
 # TodoList
-Fait dans le cadre de l'UE HLIN505 de L3 à la fac de science de Montpellier
+Project of the HLIN505 subject in L3 (at the university of Montpellier)
+
+## Caution
+This "project" use Java and Swing !
+So, reading this Java source code might burn your eyes :)
+<!--- /en -->
